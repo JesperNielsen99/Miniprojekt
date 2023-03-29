@@ -17,8 +17,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
-    @Override
-    public List<Wish> getWishes(EmailDTO email) {
+    private int getUserID(EmailDTO email) {
         try {
             SQL = "SELECT UserID FROM user WHERE Email = ?";
             preparedStatement = connection.prepareStatement(SQL);
@@ -28,6 +27,16 @@ public class WishlistRepository_DB implements IWishlistRepository {
             if (resultSet.next()) {
                 userID = resultSet.getInt("UserID");
             }
+            return userID;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Wish> getWishes(EmailDTO email) {
+        try {
+            int userID = getUserID(email);
             SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, userID);
@@ -49,6 +58,8 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
+
+
 
     public List<String> getEmails() {
         try {
