@@ -59,7 +59,23 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
+   /* public WishlistDTO addWishlist(WishlistDTO wishlist){
+        try {
+            SQL = "insert into Wishlist where wislistName";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(SQL);
+            WishlistDTO dto = new WishlistDTO();
 
+            while (resultSet.next()){
+                dto.add(resultSet.getString("wislistName"));
+            }
+
+            return wishlist;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }*/
 
     public List<String> getEmails() {
         try {
