@@ -1,5 +1,6 @@
 package com.example.miniproject_wishlist.services;
 
+import com.example.miniproject_wishlist.dto.EmailDTO;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.IWishlistRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,11 +17,7 @@ public class WishlistService {
         repository = (IWishlistRepository) context.getBean(impl);
     }
 
-    public List<Wish> getWishes() {
-        return repository.getWishes();
-    }
+    public List<Wish> getWishes(EmailDTO email) { return repository.getWishes(email); }
 
-    public Wish getWish(String wishName) {
-        return repository.getWish(wishName);
-    }
+    public List<String> getEmails() { return repository.getEmails(); }
 }

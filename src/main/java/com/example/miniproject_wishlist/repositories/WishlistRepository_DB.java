@@ -1,5 +1,6 @@
 package com.example.miniproject_wishlist.repositories;
 
+import com.example.miniproject_wishlist.dto.EmailDTO;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.util.DB_Connector;
 import org.springframework.stereotype.Repository;
@@ -17,11 +18,28 @@ public class WishlistRepository_DB implements IWishlistRepository {
     ResultSet resultSet = null;
 
     @Override
-    public List<Wish> getWishes() {
+    public List<Wish> getWishes(EmailDTO email) {
         try {
-            SQL = "SELECT * FROM wish";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
+            SQL = "SELECT UserID FROM user WHERE Email = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, email.getEmail());
+            resultSet = preparedStatement.executeQuery();
+            int userID = 0;
+            if (resultSet.next()) {
+                userID = resultSet.getInt("UserID");
+            }
+            SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, userID);
+            resultSet = preparedStatement.executeQuery();
+            int wishlistID = 0;
+            if (resultSet.next()) {
+                wishlistID = resultSet.getInt("WishlistID");
+            }
+            SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, wishlistID);
+            resultSet = preparedStatement.executeQuery();
             List<Wish> wishlist = new ArrayList<>();
             while (resultSet.next()) {
                 wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink")));
@@ -32,23 +50,18 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
-    @Override
-    public Wish getWish(String wishName) {
+    public List<String> getEmails() {
         try {
-            Connection connection = DB_Connector.getConnection();
-            SQL = "SELECT * From wish WHERE WishName = ?";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, wishName);
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink"));
-            } else {
-                return null;
+            SQL = "SELECT Email From user";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(SQL);
+            List<String> emails = new ArrayList<>();
+            while (resultSet.next()) {
+                emails.add(resultSet.getString("Email"));
             }
+            return emails;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }

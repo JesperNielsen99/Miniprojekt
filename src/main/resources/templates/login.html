@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/main.css}" rel="stylesheet">
+  <title>Log in</title>
+</head>
+<body>
+    <h1>Log in</h1>
+    <form th:object="${newEmail}" method="post">
+        <select th:field="*{email}">
+            <option th:align="center" value="">--Select Email--</option>
+            <option th:each="email : ${emails}" th:value="${email}" th:text="${email}"></option>
+        </select>
+    </p>
+        <p> <button type="submit">Submit</button> <button type="reset"> Reset </button> </p>
+    </form>
+</body>
+</html>
