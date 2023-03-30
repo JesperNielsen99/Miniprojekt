@@ -1,12 +1,14 @@
-package com.example.miniproject_wishlist.dto;
+package com.example.miniproject_wishlist.models;
 
-public class WishlistDTO {
+import com.example.miniproject_wishlist.dto.EmailDTO;
+
+public class Wishlist {
     private String wishlistName;
     private EmailDTO email;
 
-    public WishlistDTO() {}
+    public Wishlist() {}
 
-    public WishlistDTO(String wishlistName, EmailDTO email) {
+    public Wishlist(String wishlistName, EmailDTO email) {
         this.wishlistName = wishlistName;
         this.email = email;
     }
