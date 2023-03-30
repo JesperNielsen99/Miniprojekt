@@ -21,8 +21,9 @@ public class WishlistController {
     }
 
     @GetMapping(path="wishes/{email}")
-    public String getWishes(@PathVariable String  email, Model model) {
+    public String getWishes(@PathVariable String email, Model model) {
         List<Wish> wishes = wishlistService.getWishes(new EmailDTO(email));
+        model.addAttribute("email", email);
         model.addAttribute("wishlist", wishes);
         return "wishlists";
     }
@@ -41,16 +42,18 @@ public class WishlistController {
         return "redirect:/wishes/" + emailDTO.getEmail();
     }
 
-    @GetMapping(path = "addwishlist")
-    public String addWishlistForm(Model model){
-        model.addAttribute("newWishlist",new Wishlist());
+    @GetMapping(path = "addwishlist/{email}")
+    public String addWishlistForm(@PathVariable String  email, Model model){
+        Wishlist wishlist = new Wishlist();
+        wishlist.setEmail(new EmailDTO(email));
+        model.addAttribute("newWishlist", wishlist);
         return "addWishlistForm";
     }
 
-    @PostMapping(path = "addwishlist")
-    public String addWishlistSubmit(@ModelAttribute("newWishlist") Wishlist wishlist){
+    @PostMapping(path = "addwishlist/{email}")
+    public String addWishlistSubmit(@PathVariable String  email, @ModelAttribute("newWishlist") Wishlist wishlist){
         wishlistService.addWishlist(wishlist);
-        return "redirect:wishes/{email}";
+        return "redirect:wishes/" + email;
     }
 
 
