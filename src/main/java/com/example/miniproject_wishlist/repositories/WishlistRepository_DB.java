@@ -1,6 +1,7 @@
 package com.example.miniproject_wishlist.repositories;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
+import com.example.miniproject_wishlist.dto.WishDTO;
 import com.example.miniproject_wishlist.dto.WishlistDTO;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.util.DB_Connector;
@@ -67,6 +68,18 @@ public class WishlistRepository_DB implements IWishlistRepository {
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, wishlist.getWishlistName());
             preparedStatement.setInt(2, getUserID(wishlist.getEmail()));
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addWish(WishDTO wish){
+        try {
+            SQL = "INSTERT INTO wishlist(wishName,wishLink) VALUES (?, ?);";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, wish.getWishName());
+            preparedStatement.setString(2, wish.getWishLink());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
