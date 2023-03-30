@@ -1,6 +1,6 @@
 package com.example.miniproject_wishlist.models;
 
-import com.example.miniproject_wishlist.dto.*;
+import com.example.miniproject_wishlist.dto.EmailDTO;
 
 public class Wishlist {
     private String wishlistName;
