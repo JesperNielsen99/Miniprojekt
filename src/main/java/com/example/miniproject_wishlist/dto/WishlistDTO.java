@@ -4,9 +4,7 @@ public class WishlistDTO {
     private String wishlistName;
     private EmailDTO email;
 
-    public WishlistDTO() {
-
-    }
+    public WishlistDTO() {}
 
     public WishlistDTO(String wishlistName, EmailDTO email) {
         this.wishlistName = wishlistName;
