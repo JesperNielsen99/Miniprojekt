@@ -2,7 +2,7 @@ package com.example.miniproject_wishlist.repositories;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
 import com.example.miniproject_wishlist.dto.WishDTO;
-import com.example.miniproject_wishlist.dto.WishlistDTO;
+import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.util.DB_Connector;
 import org.springframework.stereotype.Repository;
@@ -62,17 +62,18 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
+
     @Override
-    public List<WishlistDTO> getAllWishlists(EmailDTO email) {
+    public List<Wishlist> getAllWishlists(EmailDTO email) {
         try{
         SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setInt(1, getUserID(email));
         resultSet = preparedStatement.executeQuery();
 
-        List<WishlistDTO> wishlists = new ArrayList<>();
+        List<Wishlist> wishlists = new ArrayList<>();
         while (resultSet.next()) {
-            wishlists.add(new WishlistDTO(resultSet.getString("WishlistName"),email));
+            wishlists.add(new Wishlist(resultSet.getString("WishlistName"),email));
         }
         return wishlists;
 
@@ -81,11 +82,8 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
     }
 
-
-
-
     @Override
-    public void addWishlist(WishlistDTO wishlist) {
+    public void addWishlist(Wishlist wishlist) {
         try {
             SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?);";
             preparedStatement = connection.prepareStatement(SQL);
