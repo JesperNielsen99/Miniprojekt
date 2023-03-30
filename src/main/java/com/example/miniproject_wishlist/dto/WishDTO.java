@@ -1,12 +1,14 @@
 package com.example.miniproject_wishlist.dto;
 
+import com.example.miniproject_wishlist.models.Wishlist;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class WishDTO {
     private String wishName;
     private String wishLink;
-    private List<WishlistDTO> wishlists = new ArrayList<>();
+    private List<Wishlist> wishlists = new ArrayList<>();
 
     public WishDTO() {
     }
@@ -19,11 +21,11 @@ public class WishDTO {
         return wishLink;
     }
 
-    public List<WishlistDTO> getWishlists() {
+    public List<Wishlist> getWishlists() {
         return wishlists;
     }
 
-    public void addWishlist(WishlistDTO wishlist){
+    public void addWishlist(Wishlist wishlist){
         wishlists.add(wishlist);
     }
 
@@ -36,7 +38,7 @@ public class WishDTO {
         this.wishLink = wishLink;
     }
 
-    public void setWishlists(List<WishlistDTO> wishlists) {
+    public void setWishlists(List<Wishlist> wishlists) {
         this.wishlists = wishlists;
     }
 }
