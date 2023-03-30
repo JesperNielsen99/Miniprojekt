@@ -2,6 +2,7 @@ package com.example.miniproject_wishlist.controllers;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
 import com.example.miniproject_wishlist.models.Wish;
+import com.example.miniproject_wishlist.repositories.WishlistRepository_DB;
 import com.example.miniproject_wishlist.services.WishlistService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,9 +41,17 @@ public class WishlistController {
     }
 
     @GetMapping(path = "addwishlist")
-    public String addWishlist(Model model){
+    public String addWishlistForm(Model model){
         model.addAttribute("newWishlist",new WishlistDTO());
         return "addWishlistForm";
     }
+
+    @PostMapping(path = "addwishlist")
+    public String addWishlistSubmit(@ModelAttribute("WishlistDTO") WishlistDTO wishlistDTO){
+        WishlistService.addWishlistSubmit();
+        return "redirect:wishes/{email}";
+    }
+
+
 
 }
