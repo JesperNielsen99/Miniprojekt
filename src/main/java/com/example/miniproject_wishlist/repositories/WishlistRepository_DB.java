@@ -71,6 +71,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+
         }
     }
 
