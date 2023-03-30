@@ -1,6 +1,7 @@
 package com.example.miniproject_wishlist.repositories;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
+import com.example.miniproject_wishlist.dto.WishlistDTO;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.util.DB_Connector;
 import org.springframework.stereotype.Repository;
@@ -59,27 +60,22 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
-   /* public WishlistDTO addWishlist(WishlistDTO wishlist){
+    @Override
+    public void addWishlist(WishlistDTO wishlist) {
         try {
-            SQL = "insert into Wishlist where wislistName";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
-            WishlistDTO dto = new WishlistDTO();
-
-            while (resultSet.next()){
-                dto.add(resultSet.getString("wislistName"));
-            }
-
-            return wishlist;
+            SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?);";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, wishlist.getWishlistName());
+            preparedStatement.setInt(2, getUserID(wishlist.getEmail()));
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-    }*/
+    }
 
     public List<String> getEmails() {
         try {
-            SQL = "SELECT Email From user";
+            SQL = "SELECT Email FROM user";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(SQL);
             List<String> emails = new ArrayList<>();
