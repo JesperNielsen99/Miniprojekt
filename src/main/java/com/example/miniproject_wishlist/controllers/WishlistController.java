@@ -48,7 +48,7 @@ public class WishlistController {
 
     @PostMapping(path = "addwishlist")
     public String addWishlistSubmit(@ModelAttribute("WishlistDTO") WishlistDTO wishlistDTO){
-        WishlistService.addWishlistSubmit();
+        WishlistService.addWishlist(wishlistDTO);
         return "redirect:wishes/{email}";
     }
 
