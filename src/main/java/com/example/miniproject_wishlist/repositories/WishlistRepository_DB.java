@@ -51,7 +51,9 @@ public class WishlistRepository_DB implements IWishlistRepository {
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, wishlistID);
             resultSet = preparedStatement.executeQuery();
+
             List<Wish> wishlist = new ArrayList<>();
+
             while (resultSet.next()) {
                 wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink")));
             }
@@ -60,6 +62,27 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
+    @Override
+    public List<WishlistDTO> getAllWishlists(EmailDTO email) {
+        try{
+        SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
+        preparedStatement = connection.prepareStatement(SQL);
+        preparedStatement.setInt(1, getUserID(email));
+        resultSet = preparedStatement.executeQuery();
+
+        List<WishlistDTO> wishlists = new ArrayList<>();
+        while (resultSet.next()) {
+            wishlists.add(new WishlistDTO(resultSet.getString("WishlistName"),email));
+        }
+        return wishlists;
+
+    } catch (SQLException e){
+        throw new RuntimeException(e);
+    }
+    }
+
+
+
 
     @Override
     public void addWishlist(WishlistDTO wishlist) {

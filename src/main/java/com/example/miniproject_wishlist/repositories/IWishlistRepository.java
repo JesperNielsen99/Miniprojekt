@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IWishlistRepository {
 
+    List<WishlistDTO> getAllWishlists(EmailDTO email);
+
     void addWishlist(WishlistDTO wishlist);
 
     List<Wish> getWishes(EmailDTO email);
