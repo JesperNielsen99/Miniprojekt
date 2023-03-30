@@ -39,4 +39,10 @@ public class WishlistController {
         return "redirect:/wishes/" + emailDTO.getEmail();
     }
 
+    @GetMapping(path = "addwishlist")
+    public String addWishlist(Model model){
+        model.addAttribute("newWishlist",new WishlistDTO());
+        return "addWishlistForm";
+    }
+
 }
