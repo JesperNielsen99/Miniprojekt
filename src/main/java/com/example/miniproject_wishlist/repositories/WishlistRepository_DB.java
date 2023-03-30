@@ -1,10 +1,10 @@
 package com.example.miniproject_wishlist.repositories;
 
-import com.example.miniproject_wishlist.dto.EmailDTO;
+import com.example.miniproject_wishlist.dto.*;
 import com.example.miniproject_wishlist.dto.WishDTO;
 import com.example.miniproject_wishlist.models.Wishlist;
-import com.example.miniproject_wishlist.models.Wish;
-import com.example.miniproject_wishlist.repositories.util.DB_Connector;
+import com.example.miniproject_wishlist.models.*;
+import com.example.miniproject_wishlist.repositories.util.*;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;

@@ -1,7 +1,7 @@
 package com.example.miniproject_wishlist.services;
 
-import com.example.miniproject_wishlist.dto.EmailDTO;
-import com.example.miniproject_wishlist.models.Wish;
+import com.example.miniproject_wishlist.dto.*;
+import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.repositories.IWishlistRepository;
 import org.springframework.beans.factory.annotation.Value;
