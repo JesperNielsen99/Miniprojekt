@@ -1,6 +1,7 @@
 package com.example.miniproject_wishlist.services;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
+import com.example.miniproject_wishlist.dto.WishlistDTO;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.IWishlistRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +22,7 @@ public class WishlistService {
 
     public List<String> getEmails() { return repository.getEmails(); }
 
-    public void addWishlist(wishlistDTO){
+    public void addWishlist(WishlistDTO wishlistDTO){
         repository.addWishlist(wishlistDTO);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.miniproject_wishlist.controllers;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
+import com.example.miniproject_wishlist.dto.WishlistDTO;
 import com.example.miniproject_wishlist.models.Wish;
 import com.example.miniproject_wishlist.repositories.WishlistRepository_DB;
 import com.example.miniproject_wishlist.services.WishlistService;
@@ -47,8 +48,8 @@ public class WishlistController {
     }
 
     @PostMapping(path = "addwishlist")
-    public String addWishlistSubmit(@ModelAttribute("WishlistDTO") WishlistDTO wishlistDTO){
-        WishlistService.addWishlist(wishlistDTO);
+    public String addWishlistSubmit(@ModelAttribute("WishlistDTO") WishlistDTO wishlist){
+        wishlistService.addWishlist(wishlist);
         return "redirect:wishes/{email}";
     }
 
