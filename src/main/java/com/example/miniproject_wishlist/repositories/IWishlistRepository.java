@@ -1,6 +1,7 @@
 package com.example.miniproject_wishlist.repositories;
 
 import com.example.miniproject_wishlist.dto.EmailDTO;
+import com.example.miniproject_wishlist.dto.WishDTO;
 import com.example.miniproject_wishlist.dto.WishlistDTO;
 import com.example.miniproject_wishlist.models.Wish;
 
@@ -13,4 +14,6 @@ public interface IWishlistRepository {
     List<Wish> getWishes(EmailDTO email);
 
     List<String> getEmails();
+
+    void addWish(WishDTO wish);
 }

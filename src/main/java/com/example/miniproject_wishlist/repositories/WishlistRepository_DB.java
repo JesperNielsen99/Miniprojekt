@@ -19,17 +19,17 @@ public class WishlistRepository_DB implements IWishlistRepository {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
-    private int getUserID(EmailDTO email) {
+
+    public List<String> getEmails() {
         try {
-            SQL = "SELECT UserID FROM user WHERE Email = ?";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, email.getEmail());
-            resultSet = preparedStatement.executeQuery();
-            int userID = 0;
-            if (resultSet.next()) {
-                userID = resultSet.getInt("UserID");
+            SQL = "SELECT Email FROM user";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(SQL);
+            List<String> emails = new ArrayList<>();
+            while (resultSet.next()) {
+                emails.add(resultSet.getString("Email"));
             }
-            return userID;
+            return emails;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -74,7 +74,8 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
-    public void addWish(WishDTO wish){
+    @Override
+    public void addWish(WishDTO wish) {
         try {
             SQL = "INSTERT INTO wishlist(wishName,wishLink) VALUES (?, ?);";
             preparedStatement = connection.prepareStatement(SQL);
@@ -86,16 +87,19 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
-    public List<String> getEmails() {
+
+//-----------------------------------------------------Helper--methods----------------------------------------------\\
+    private int getUserID(EmailDTO email) {
         try {
-            SQL = "SELECT Email FROM user";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
-            List<String> emails = new ArrayList<>();
-            while (resultSet.next()) {
-                emails.add(resultSet.getString("Email"));
+            SQL = "SELECT UserID FROM user WHERE Email = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, email.getEmail());
+            resultSet = preparedStatement.executeQuery();
+            int userID = 0;
+            if (resultSet.next()) {
+                userID = resultSet.getInt("UserID");
             }
-            return emails;
+            return userID;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
