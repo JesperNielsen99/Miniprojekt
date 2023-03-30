@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
 
-<form method=# th:action="@{addwishlist}" th:method="post" th:object="${WishlistDTO}">
+<form th:method="post" th:object="${newWishlist}">
     <div>
         <label for="wishlistName">Name of wishlist:</label>
         <input type="text" id="wishlistName" th:field="*{wishlistName}">
