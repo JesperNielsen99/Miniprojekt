@@ -20,4 +20,8 @@ public class WishlistService {
     public List<Wish> getWishes(EmailDTO email) { return repository.getWishes(email); }
 
     public List<String> getEmails() { return repository.getEmails(); }
+
+    public void addWishlist(wishlistDTO){
+        repository.addWishlist(wishlistDTO);
+    }
 }

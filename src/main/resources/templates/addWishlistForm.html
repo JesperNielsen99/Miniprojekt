@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method=# th:action="@{addwishlist}" th:method="post" th:object="${WishlistDTO}">
+    <div>
+        <label for="wishlistName">Name of wishlist:</label>
+        <input type="text" id="wishlistName" th:field="*{wishlistName}">
+    </div>
+
+    <div>
+        <button type="submit">Add wishlist</button>
+    </div>
+</form>
+
+</body>
+</html>
