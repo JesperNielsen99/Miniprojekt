@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <title>Wishes</title>
+</head>
+<body>
+
+
+<form th:method="post" th:object="${newWish}">
+    <div>
+        <label for="wishName">Name of wish:</label>
+        <input type="text" id="wishName" th:field="*{wishName}">
+    </div>
+
+    <div>
+        <button type="submit">Add wish</button>
+    </div>
+
+
+</form>
+
+
+
+</body>
+</html>
