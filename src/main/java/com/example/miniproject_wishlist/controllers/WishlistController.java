@@ -21,10 +21,10 @@ public class WishlistController {
     }
 
     @GetMapping(path="wishes/{email}")
-    public String getWishes(@PathVariable String email, Model model) {
-        List<Wish> wishes = wishlistService.getWishes(new EmailDTO(email));
+    public String getWishlists(@PathVariable String email, Model model) {
+        List<Wishlist> wishlists = wishlistService.getWishlists(new EmailDTO(email));
         model.addAttribute("email", email);
-        model.addAttribute("wishlist", wishes);
+        model.addAttribute("wishlists", wishlists);
         return "wishlists";
     }
 
