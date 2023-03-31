@@ -38,10 +38,9 @@ public class WishlistRepository_DB implements IWishlistRepository {
     @Override
     public List<Wish> getWishes(EmailDTO email) {
         try {
-            int userID = getUserID(email);
             SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
             preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(1, getUserID(email));
             resultSet = preparedStatement.executeQuery();
             int wishlistID = 0;
             if (resultSet.next()) {
@@ -51,9 +50,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, wishlistID);
             resultSet = preparedStatement.executeQuery();
-
             List<Wish> wishlist = new ArrayList<>();
-
             while (resultSet.next()) {
                 wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink")));
             }
@@ -70,7 +67,6 @@ public class WishlistRepository_DB implements IWishlistRepository {
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setInt(1, getUserID(email));
         resultSet = preparedStatement.executeQuery();
-
         List<Wishlist> wishlists = new ArrayList<>();
         while (resultSet.next()) {
             wishlists.add(new Wishlist(resultSet.getString("WishlistName"),email));
@@ -92,7 +88,6 @@ public class WishlistRepository_DB implements IWishlistRepository {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
-
         }
     }
 
@@ -114,9 +109,9 @@ public class WishlistRepository_DB implements IWishlistRepository {
     private int getUserID(EmailDTO email) {
         try {
             SQL = "SELECT UserID FROM user WHERE Email = ?";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, email.getEmail());
-            resultSet = preparedStatement.executeQuery();
+            PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
+            preparedStatementUserID.setString(1, email.getEmail());
+            resultSet = preparedStatementUserID.executeQuery();
             int userID = 0;
             if (resultSet.next()) {
                 userID = resultSet.getInt("UserID");
