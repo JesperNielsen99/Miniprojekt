@@ -17,6 +17,7 @@ public class WishDTO {
         return wishName;
     }
 
+
     public String getWishLink() {
         return wishLink;
     }

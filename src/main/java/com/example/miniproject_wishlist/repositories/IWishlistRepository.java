@@ -18,4 +18,6 @@ public interface IWishlistRepository {
     List<String> getEmails();
 
     void addWish(WishDTO wish);
+
+
 }
