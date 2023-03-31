@@ -18,11 +18,11 @@ public class WishlistService {
         repository = (IWishlistRepository) context.getBean(impl);
     }
 
+    public List<Wishlist> getWishlists(EmailDTO email) { return repository.getAllWishlists(email); }
+
     public List<Wish> getWishes(EmailDTO email) { return repository.getWishes(email); }
 
     public List<String> getEmails() { return repository.getEmails(); }
 
-    public void addWishlist(Wishlist wishlist){
-        repository.addWishlist(wishlist);
-    }
+    public void addWishlist(Wishlist wishlist) { repository.addWishlist(wishlist); }
 }

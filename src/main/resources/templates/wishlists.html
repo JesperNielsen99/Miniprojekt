@@ -4,21 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/main.css}" rel="stylesheet">
-    <title>Wishes</title>
+    <title>Wishlists</title>
 </head>
 <body>
-<h1>Wishes</h1>
+<h1>Your wishlists</h1>
 <table>
     <thead>
     <tr>
-        <th scope="col">Wish Name</th>
+        <th scope="col">Wishlist Name</th>
         <th scope="col">Link</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="wish: ${wishlist}">
-        <td th:text="${wish.wishName}"/>
-        <td th:text="link" th:href="${wish.wishLink}" target="_self"/>
+    <tr th:each="wishlist: ${wishlists}">
+        <td th:text="${wishlist.wishlistName}"/>
+
+        <td th:text="link" th:href="@{/wishlists/{wishlistname}/{email}
+        (wishlistname=${wishlist.wishlistName}, email=${email})}" target="_self"/>
     </tr>
     </tbody>
 </table>
