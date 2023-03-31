@@ -19,8 +19,12 @@
     <tr th:each="wishlist: ${wishlists}">
         <td th:text="${wishlist.wishlistName}"/>
 
-        <td th:text="link" th:href="@{/wishlists/{wishlistname}/{email}
-        (wishlistname=${wishlist.wishlistName}, email=${email})}" target="_self"/>
+        <td>
+            <a th:href="@{/wishlists/{wishlistname}/{email}
+        (wishlistname=${wishlist.wishlistName}, email=${email})}" target="_self">
+                Wishes
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>

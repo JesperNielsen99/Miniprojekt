@@ -24,5 +24,7 @@ public class WishlistService {
 
     public List<String> getEmails() { return repository.getEmails(); }
 
+    public void addWishToWishlist(WishDTO wish) { repository.addWish(wish); }
+
     public void addWishlist(Wishlist wishlist) { repository.addWishlist(wishlist); }
 }
