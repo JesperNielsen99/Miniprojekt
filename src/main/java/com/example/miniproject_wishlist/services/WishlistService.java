@@ -25,4 +25,6 @@ public class WishlistService {
     public void addWishlist(Wishlist wishlist){
         repository.addWishlist(wishlist);
     }
+
+    public void addWishToWishlist(WishDTO wish) { repository.addWish(wish); }
 }

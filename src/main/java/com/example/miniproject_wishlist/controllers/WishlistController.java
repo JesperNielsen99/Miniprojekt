@@ -5,6 +5,7 @@ import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.repositories.WishlistRepository_DB;
 import com.example.miniproject_wishlist.services.WishlistService;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,24 @@ public class WishlistController {
         wishlistService.addWishlist(wishlist);
         return "redirect:wishes/" + email;
     }
+
+    @GetMapping(path = "addwish/{email}")
+    public String addWishForm(@PathVariable String email, Model model) {
+        WishDTO wish = new WishDTO();
+        List<Wishlist> wishlists = wishlistService.getWishlists(new EmailDTO(email));
+        wish.setWishlists(wishlists);
+        model.addAttribute("newWish", wish);
+        return "addWishForm";
+    }
+
+    @PostMapping(path = "addwish/{email}")
+    public String addWishSubmit(@PathVariable String email, @ModelAttribute("newWish") WishDTO wish) {
+        wishlistService.addWishToWishlist(wish);
+        return "redirect:wishes/" + email;
+    }
+
+
+
 
 
 

@@ -85,7 +85,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
     @Override
     public void addWishlist(Wishlist wishlist) {
         try {
-            SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?);";
+            SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, wishlist.getWishlistName());
             preparedStatement.setInt(2, getUserID(wishlist.getEmail()));
@@ -99,11 +99,26 @@ public class WishlistRepository_DB implements IWishlistRepository {
     @Override
     public void addWish(WishDTO wish) {
         try {
-            SQL = "INSTERT INTO wishlist(wishName,wishLink) VALUES (?, ?);";
-            preparedStatement = connection.prepareStatement(SQL);
+            SQL = "INSTERT INTO wishlist (wishName, wishLink) VALUES (?, ?)";
+            preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, wish.getWishName());
             preparedStatement.setString(2, wish.getWishLink());
             preparedStatement.executeUpdate();
+            resultSet = preparedStatement.getGeneratedKeys();
+            int wishID = resultSet.getInt("WishID");
+            for (Wishlist wishlist : wish.getWishlists()){
+                SQL = "SELECT WishlistID FROM wishlist WHERE WishlistName = ?";
+                preparedStatement = connection.prepareStatement(SQL);
+                preparedStatement.setString(1, wishlist.getWishlistName());
+                resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    SQL = "INSERT INTO wishlist_wish (WishID, WishlistID) VALUES (?, ?)";
+                    preparedStatement = connection.prepareStatement(SQL);
+                    preparedStatement.setInt(1, wishID);
+                    preparedStatement.setInt(2, resultSet.getInt("WishlistID")) ;
+                    preparedStatement.executeUpdate();
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
