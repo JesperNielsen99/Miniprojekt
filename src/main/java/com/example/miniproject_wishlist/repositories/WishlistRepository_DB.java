@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("Wishlist_DB")
-public class WishlistRepository_DB implements IWishlistRepository {
+public class WishlistRepository_DB implements IWishlistRepository, IUserRepository {
     String SQL = null;
     Connection connection = DB_Connector.getConnection();
     Statement statement = null;
@@ -36,12 +36,12 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public List<Wish> getWishes(EmailDTO email) {
+    public List<Wish> getWishes(User user) {
         try {
             List<Wish> wishlist = new ArrayList<>();
             SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
             preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, getUserID(email));
+            preparedStatement.setInt(1, getUserID(user.getEmail(), user.getPassword()));
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
@@ -59,15 +59,15 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public List<Wishlist> getAllWishlists(EmailDTO email) {
+    public List<Wishlist> getAllWishlists(User user) {
         try{
         SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
         preparedStatement = connection.prepareStatement(SQL);
-        preparedStatement.setInt(1, getUserID(email));
+        preparedStatement.setInt(1, getUserID(user.getEmail(), user.getPassword()));
         resultSet = preparedStatement.executeQuery();
         List<Wishlist> wishlists = new ArrayList<>();
         while (resultSet.next()) {
-            wishlists.add(new Wishlist(resultSet.getString("WishlistName"),email));
+            wishlists.add(new Wishlist(resultSet.getString("WishlistName"), user.getUserID()));
         }
         return wishlists;
 
@@ -82,7 +82,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, wishlist.getWishlistName());
-            preparedStatement.setInt(2, getUserID(wishlist.getEmail()));
+            preparedStatement.setInt(2, wishlist.getUserID());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -117,9 +117,72 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
+    @Override
+    public User createUser(User user) {
+        try {
+            SQL = "INSTERT INTO user (UserName, Email, Password) VALUES (?, ?, ?)";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.executeUpdate();
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public User updateUser(User user) {
+        try {
+            SQL = "UPDATE user SET UserName = ?, Email = ?, Password = ? WHERE Email = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.executeUpdate();
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /*@Override
+    public User DeleteUser(User user) {
+        try {
+            SQL = "SELECT "
+            SQL = "DELETE FROM wishlist_wish WHERE wishlistID = "
+            SQL = "DELETE FROM user WHERE Email = ?";
+            preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.executeUpdate();
+            return user;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }*/
+
 
 //-----------------------------------------------------Helper--methods----------------------------------------------\\
-    private User getUserID(String email, String password) {
+    private int getUserID(String email, String password) {
+        try {
+            SQL = "SELECT UserID FROM user WHERE Email = ? AND Password = ?";
+            PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
+            preparedStatementUserID.setString(1, email);
+            preparedStatementUserID.setString(2, password);
+            resultSet = preparedStatementUserID.executeQuery();
+            int userID = 0;
+            if (resultSet.next()) {
+                userID = resultSet.getInt("UserID");
+            }
+            return userID;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private User getUser(String email, String password) {
         try {
             SQL = "SELECT * FROM user WHERE Email = ? AND Password = ?";
             PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
@@ -128,7 +191,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             resultSet = preparedStatementUserID.executeQuery();
             User user = null;
             if (resultSet.next()) {
-                user = new User(resultSet.getString("UserName"), resultSet.getString("Email"), resultSet.getString("Password"));
+                user = new User( resultSet.getInt("UserID"), resultSet.getString("UserName"), resultSet.getString("Email"), resultSet.getString("Password"));
             }
             return user;
         } catch (SQLException e) {

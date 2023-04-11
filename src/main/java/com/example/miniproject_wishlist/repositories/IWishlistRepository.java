@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface IWishlistRepository {
 
-    List<Wishlist> getAllWishlists(EmailDTO email);
+    List<Wishlist> getAllWishlists(User user);
 
     void addWishlist(Wishlist wishlist);
 
-    List<Wish> getWishes(EmailDTO email);
+    List<Wish> getWishes(User user);
 
     List<String> getEmails();
 

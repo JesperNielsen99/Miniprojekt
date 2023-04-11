@@ -3,9 +3,7 @@ package com.example.miniproject_wishlist.controllers;
 import com.example.miniproject_wishlist.dto.*;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
-import com.example.miniproject_wishlist.repositories.WishlistRepository_DB;
 import com.example.miniproject_wishlist.services.WishlistService;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +44,7 @@ public class WishlistController {
     @GetMapping(path = "addwishlist/{email}")
     public String addWishlistForm(@PathVariable String  email, Model model){
         Wishlist wishlist = new Wishlist();
-        wishlist.setEmail(new EmailDTO(email));
+        wishlist.setUserID(new EmailDTO(email));
         model.addAttribute("newWishlist", wishlist);
         return "addWishlistForm";
     }
