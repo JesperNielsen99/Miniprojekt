@@ -8,13 +8,16 @@
 </head>
 <body>
     <h1>Log in</h1>
-    <form th:object="${newEmail}" method="post">
-        <select th:field="*{email}">
-            <option th:align="center" value="">--Select Email--</option>
-            <option th:each="email : ${emails}" th:value="${email}" th:text="${email}"></option>
-        </select>
-    </p>
-        <p> <button type="submit">Submit</button> <button type="reset"> Reset </button> </p>
+    <form action="/login" method="post">
+        <p th:if="${wrongCredentials}" class="error">Forkert brugerid eller password</p>
+        <p><label>Email:</label>
+            <input name="email" type="text" autofocus></p>
+        <p><label>Password:</label>
+            <input name="password" type="password"></p>
+        <p>
+            <button type="submit">Login</button>
+            <a th:href="@{'/'}"><button type="button">Fortryd</button></a>
+        </p>
     </form>
 </body>
 </html>
