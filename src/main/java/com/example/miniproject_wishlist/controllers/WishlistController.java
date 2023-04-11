@@ -3,10 +3,8 @@ package com.example.miniproject_wishlist.controllers;
 import com.example.miniproject_wishlist.dto.*;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
-import com.example.miniproject_wishlist.repositories.WishlistRepository_DB;
 import com.example.miniproject_wishlist.services.WishlistService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +43,7 @@ public class WishlistController {
         return "login";
     }
 
-    @PostMapping(path = "addwishlist/{email}")
+    @PostMapping(path = "addwishlist")
     public String addWishlistSubmit(HttpSession session, @PathVariable String  email, @ModelAttribute("newWishlist") Wishlist wishlist){
         if (isLoogedIn(session)) {
             wishlistService.addWishlist(wishlist);
@@ -54,7 +52,7 @@ public class WishlistController {
         return "login";
     }
 
-    @GetMapping(path = "addwish/{email}")
+    @GetMapping(path = "addwish")
     public String addWishForm(HttpSession session, @PathVariable String email, Model model) {
         if (isLoogedIn(session)) {
             WishDTO wish = new WishDTO();
@@ -66,7 +64,7 @@ public class WishlistController {
         return "login";
     }
 
-    @PostMapping(path = "addwish/{email}")
+    @PostMapping(path = "addwish")
     public String addWishSubmit(HttpSession session, @PathVariable String email, @ModelAttribute("newWish") WishDTO wish) {
         if (isLoogedIn(session)) {
             wishlistService.addWishToWishlist(wish);
@@ -75,7 +73,7 @@ public class WishlistController {
         return "login";
     }
 
-    @GetMapping(path = "/wishlists/{wishlistName}/{email}")
+    @GetMapping(path = "/wishlists/{wishlistName}")
     public String getWishesFromWishlist( HttpSession session,@PathVariable String wishlistName, @PathVariable String email, Model model) {
         if (isLoogedIn(session)) {
             List<Wish> wishes = wishlistService.getWishes(new EmailDTO(email));
