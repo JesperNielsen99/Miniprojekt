@@ -119,17 +119,18 @@ public class WishlistRepository_DB implements IWishlistRepository {
 
 
 //-----------------------------------------------------Helper--methods----------------------------------------------\\
-    private int getUserID(EmailDTO email) {
+    private User getUserID(String email, String password) {
         try {
-            SQL = "SELECT UserID FROM user WHERE Email = ?";
+            SQL = "SELECT * FROM user WHERE Email = ? AND Password = ?";
             PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
-            preparedStatementUserID.setString(1, email.getEmail());
+            preparedStatementUserID.setString(1, email);
+            preparedStatementUserID.setString(2, password);
             resultSet = preparedStatementUserID.executeQuery();
-            int userID = 0;
+            User user = null;
             if (resultSet.next()) {
-                userID = resultSet.getInt("UserID");
+                user = new User(resultSet.getString("UserName"), resultSet.getString("Email"), resultSet.getString("Password"));
             }
-            return userID;
+            return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
