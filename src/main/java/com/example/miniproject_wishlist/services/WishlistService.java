@@ -13,14 +13,13 @@ import java.util.List;
 public class WishlistService {
     private final IWishlistRepository repository;
 
-    public WishlistService(ApplicationContext context, @Value("${wishlist.repository.impl}") String impl) {
+    public WishlistService(ApplicationContext context, @Value("Wishlist_DB") String impl) {
         repository = (IWishlistRepository) context.getBean(impl);
     }
 
     public List<Wishlist> getWishlists(User user) { return repository.getAllWishlists(user); }
 
     public List<Wish> getWishes(User user) { return repository.getWishes(user); }
-
 
     public void addWishToWishlist(Wish wish) { repository.addWish(wish); }
 

@@ -43,13 +43,13 @@ public class WishlistRepository_DB implements IWishlistRepository {
     @Override
     public List<Wishlist> getAllWishlists(User user) {
         try {
-            SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
+            SQL = "SELECT WishlistName, WishlistID FROM wishlist WHERE UserID = ?";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, user.getUserID());
             resultSet = preparedStatement.executeQuery();
             List<Wishlist> wishlists = new ArrayList<>();
             while (resultSet.next()) {
-                wishlists.add(new Wishlist(resultSet.getString("WishlistName"), user.getUserID()));
+                wishlists.add(new Wishlist(resultSet.getString("WishlistName"), resultSet.getInt("WishlistID"), user.getUserID()));
             }
             return wishlists;
 

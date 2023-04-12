@@ -6,6 +6,7 @@ import com.example.miniproject_wishlist.repositories.util.DB_Connector;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+
 @Repository("User_DB")
 public class UserRepository_DB implements IUserRepository {
     String SQL = null;

@@ -36,19 +36,19 @@ public class LoginController {
         User user = loginService.getUser(email, password);
         if (user != null) {
             session.setAttribute("user", user);
-            session.setMaxInactiveInterval(30);
-            return "wishlists";
+            session.setMaxInactiveInterval(900);
+            return "redirect:/wishlists";
         }
         // wrong credentials
         model.addAttribute("wrongCredentials", true);
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         // invalidate session and return landing page
         session.invalidate();
-        return "login";
+        return "redirect:/login";
     }
 
 

@@ -28,10 +28,11 @@ public class WishlistController {
     public String getWishlists(HttpSession session, Model model) {
         if (isLoggedIn(session)) {
             List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
+            System.out.println((User) session.getAttribute("user"));
             model.addAttribute("wishlists", wishlists);
             return "wishlists";
         }
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping(path = "addwishlist")
@@ -43,16 +44,16 @@ public class WishlistController {
             model.addAttribute("newWishlist", wishlist);
             return "addWishlistForm";
         }
-        return "login";
+        return "redirect:/login";
     }
 
     @PostMapping(path = "addwishlist")
     public String addWishlistSubmit(HttpSession session, @ModelAttribute("newWishlist") Wishlist wishlist){
         if (isLoggedIn(session)) {
             wishlistService.addWishlist(wishlist);
-            return "redirect:/wishlists/";
+            return "redirect:/wishlists";
         }
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping(path = "addwish")
@@ -64,27 +65,27 @@ public class WishlistController {
             model.addAttribute("newWish", wish);
             return "addWish";
         }
-        return "login";
+        return "redirect:/login";
     }
 
     @PostMapping(path = "addwish")
     public String addWishSubmit(HttpSession session, @ModelAttribute("newWish") Wish wish) {
         if (isLoggedIn(session)) {
             wishlistService.addWishToWishlist(wish);
-            return "redirect:wishes/";
+            return "redirect:/wishes";
         }
-        return "login";
+        return "redirect:/login";
     }
 
-    @GetMapping(path = "/wishlists/{wishlistName}")
-    public String getWishesFromWishlist(HttpSession session,@PathVariable String wishlistName, Model model) {
+    @GetMapping(path = "wishes")
+    public String getWishesFromWishlist(HttpSession session,@PathVariable Wishlist wishlist, Model model) {
         if (isLoggedIn(session)) {
             List<Wish> wishes = wishlistService.getWishes((User) session.getAttribute("user"));
             model.addAttribute("wishes", wishes);
-            model.addAttribute("wishlistName", wishlistName);
+            model.addAttribute("wishlist", wishlist);
             return "wishes";
         }
-        return "login";
+        return "redirect:/login";
     }
 
 }
