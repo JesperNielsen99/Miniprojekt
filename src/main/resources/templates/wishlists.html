@@ -18,16 +18,13 @@
     <tbody>
     <tr th:each="wishlist: ${wishlists}">
         <td th:text="${wishlist.wishlistName}"/>
-
         <td>
-            <a th:href="@{/wishlists}" target="_self">
-                Wishes
-            </a>
+            <button type="submit"> Wishes </button>
         </td>
     </tr>
     </tbody>
 </table>
 <br>
-<a th:href="@{/addwishlist}"><button>Add list</button></a>
+    <a th:href="@{/addwishlist}"><button>Add list</button></a>
 </body>
 </html>

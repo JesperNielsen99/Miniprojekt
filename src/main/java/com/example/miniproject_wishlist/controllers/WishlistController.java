@@ -34,6 +34,17 @@ public class WishlistController {
         return "redirect:/login";
     }
 
+    @GetMapping(path = "wishes")
+    public String getWishesFromWishlist(HttpSession session, Model model, @ModelAttribute("wishlist") Wishlist wishlist) {
+        if (isLoggedIn(session)) {
+            List<Wish> wishes = wishlistService.getWishes(wishlist.getWishlistID());
+            model.addAttribute("wishes", wishes);
+            model.addAttribute("wishlistName", wishlist.getWishlistName());
+            return "wishes";
+        }
+        return "redirect:/login";
+    }
+
     @GetMapping(path = "addwishlist")
     public String addWishlistForm(HttpSession session, Model model){
         if (isLoggedIn(session)) {
@@ -75,16 +86,4 @@ public class WishlistController {
         }
         return "redirect:/login";
     }
-
-    @GetMapping(path = "wishes")
-    public String getWishesFromWishlist(HttpSession session,@PathVariable Wishlist wishlist, Model model) {
-        if (isLoggedIn(session)) {
-            List<Wish> wishes = wishlistService.getWishes((User) session.getAttribute("user"));
-            model.addAttribute("wishes", wishes);
-            model.addAttribute("wishlist", wishlist);
-            return "wishes";
-        }
-        return "redirect:/login";
-    }
-
 }

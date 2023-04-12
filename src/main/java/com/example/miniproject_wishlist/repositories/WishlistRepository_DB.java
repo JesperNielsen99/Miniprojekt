@@ -18,21 +18,19 @@ public class WishlistRepository_DB implements IWishlistRepository {
 
 
     @Override
-    public List<Wish> getWishes(User user) {
+    public List<Wish> getWishes(int wishlistID) {
         try {
             List<Wish> wishlist = new ArrayList<>();
-            SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
+            SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
             preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, user.getUserID());
+            preparedStatement.setInt(1, wishlistID);
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
-                preparedStatement = connection.prepareStatement(SQL);
-                preparedStatement.setInt(1, resultSet.getInt("WishlistID"));
-                resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink"), null));
-                }
+            while (resultSet.next()) {
+                wishlist.add(new Wish(
+                        resultSet.getInt("WishID"),
+                        resultSet.getString("WishName"),
+                        resultSet.getString("WishLink"),
+                        null));
             }
             return wishlist;
         } catch (SQLException e) {
