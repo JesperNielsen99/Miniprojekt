@@ -98,22 +98,4 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
-
-//-----------------------------------------------------Helper--methods----------------------------------------------\\
-    private User getUser(String email, String password) {
-        try {
-            SQL = "SELECT * FROM user WHERE Email = ? AND Password = ?";
-            PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
-            preparedStatementUserID.setString(1, email);
-            preparedStatementUserID.setString(2, password);
-            resultSet = preparedStatementUserID.executeQuery();
-            User user = null;
-            if (resultSet.next()) {
-                user = new User( resultSet.getInt("UserID"), resultSet.getString("UserName"), resultSet.getString("Email"), resultSet.getString("Password"));
-            }
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
