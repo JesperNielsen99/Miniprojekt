@@ -1,7 +1,5 @@
 package com.example.miniproject_wishlist.repositories;
 
-import com.example.miniproject_wishlist.dto.*;
-import com.example.miniproject_wishlist.dto.WishDTO;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.repositories.util.*;
@@ -33,7 +31,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
                 preparedStatement.setInt(1, resultSet.getInt("WishlistID"));
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink")));
+                    wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink"), null));
                 }
             }
             return wishlist;
@@ -74,7 +72,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public void addWish(WishDTO wish) {
+    public void addWish(Wish wish) {
         try {
             SQL = "INSTERT INTO wishlist (wishName, wishLink) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
