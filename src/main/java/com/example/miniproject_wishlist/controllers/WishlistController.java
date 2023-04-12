@@ -20,12 +20,15 @@ public class WishlistController {
         this.wishlistService = wishlistService;
     }
 
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("user") != null;
+    }
+
 
     @GetMapping(path="wishlists")
-    public String getWishlists(HttpSession session, @PathVariable String email, Model model) {
-        if (isLoogedIn(session)) {
-            List<Wishlist> wishlists = wishlistService.getWishlists(new EmailDTO(email));
-            model.addAttribute("email", email);
+    public String getWishlists(HttpSession session, Model model) {
+        if (isLoggedIn(session)) {
+            List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
             model.addAttribute("wishlists", wishlists);
             return "wishlists";
         }
@@ -33,10 +36,10 @@ public class WishlistController {
     }
 
     @GetMapping(path = "addwishlist")
-    public String addWishlistForm(HttpSession session, @PathVariable String  email, Model model){
-        if (isLoogedIn(session)) {
+    public String addWishlistForm(HttpSession session, Model model){
+        if (isLoggedIn(session)) {
             Wishlist wishlist = new Wishlist();
-            wishlist.setEmail(new EmailDTO(email));
+            wishlist.setUserID((User) session.getAttribute("user"));
             model.addAttribute("newWishlist", wishlist);
             return "addWishlistForm";
         }
@@ -44,50 +47,44 @@ public class WishlistController {
     }
 
     @PostMapping(path = "addwishlist")
-    public String addWishlistSubmit(HttpSession session, @PathVariable String  email, @ModelAttribute("newWishlist") Wishlist wishlist){
-        if (isLoogedIn(session)) {
+    public String addWishlistSubmit(HttpSession session, @ModelAttribute("newWishlist") Wishlist wishlist){
+        if (isLoggedIn(session)) {
             wishlistService.addWishlist(wishlist);
-            return "redirect:/wishlists/" + email;
+            return "redirect:/wishlists/";
         }
         return "login";
     }
 
     @GetMapping(path = "addwish")
-    public String addWishForm(HttpSession session, @PathVariable String email, Model model) {
-        if (isLoogedIn(session)) {
+    public String addWishForm(HttpSession session, Model model) {
+        if (isLoggedIn(session)) {
             WishDTO wish = new WishDTO();
-            List<Wishlist> wishlists = wishlistService.getWishlists(new EmailDTO(email));
+            List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
             wish.setWishlists(wishlists);
             model.addAttribute("newWish", wish);
-            return "addWishForm";
+            return "addWish";
         }
         return "login";
     }
 
     @PostMapping(path = "addwish")
-    public String addWishSubmit(HttpSession session, @PathVariable String email, @ModelAttribute("newWish") WishDTO wish) {
-        if (isLoogedIn(session)) {
+    public String addWishSubmit(HttpSession session, @ModelAttribute("newWish") Wish wish) {
+        if (isLoggedIn(session)) {
             wishlistService.addWishToWishlist(wish);
-            return "redirect:wishes/" + email;
+            return "redirect:wishes/";
         }
         return "login";
     }
 
     @GetMapping(path = "/wishlists/{wishlistName}")
-    public String getWishesFromWishlist( HttpSession session,@PathVariable String wishlistName, @PathVariable String email, Model model) {
-        if (isLoogedIn(session)) {
-            List<Wish> wishes = wishlistService.getWishes(new EmailDTO(email));
-            model.addAttribute("email", email);
+    public String getWishesFromWishlist(HttpSession session,@PathVariable String wishlistName, Model model) {
+        if (isLoggedIn(session)) {
+            List<Wish> wishes = wishlistService.getWishes((User) session.getAttribute("user"));
             model.addAttribute("wishes", wishes);
             model.addAttribute("wishlistName", wishlistName);
             return "wishes";
         }
         return "login";
-    }
-
-
-    private boolean isLoogedIn(HttpSession session) {
-        return session.getAttribute("user") != null;
     }
 
 }
