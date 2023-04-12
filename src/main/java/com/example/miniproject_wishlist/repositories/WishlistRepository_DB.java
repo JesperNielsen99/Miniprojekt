@@ -1,7 +1,5 @@
 package com.example.miniproject_wishlist.repositories;
 
-import com.example.miniproject_wishlist.dto.*;
-import com.example.miniproject_wishlist.dto.WishDTO;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.repositories.util.*;
@@ -15,33 +13,17 @@ import java.util.List;
 public class WishlistRepository_DB implements IWishlistRepository {
     String SQL = null;
     Connection connection = DB_Connector.getConnection();
-    Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
 
-    public List<String> getEmails() {
-        try {
-            SQL = "SELECT Email FROM user";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
-            List<String> emails = new ArrayList<>();
-            while (resultSet.next()) {
-                emails.add(resultSet.getString("Email"));
-            }
-            return emails;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
-    public List<Wish> getWishes(EmailDTO email) {
+    public List<Wish> getWishes(User user) {
         try {
             List<Wish> wishlist = new ArrayList<>();
             SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
             preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, getUserID(email));
+            preparedStatement.setInt(1, user.getUserID());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
@@ -49,7 +31,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
                 preparedStatement.setInt(1, resultSet.getInt("WishlistID"));
                 resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
-                    wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink")));
+                    wishlist.add(new Wish(resultSet.getString("WishName"), resultSet.getString("WishLink"), null));
                 }
             }
             return wishlist;
@@ -59,15 +41,15 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public List<Wishlist> getAllWishlists(EmailDTO email) {
+    public List<Wishlist> getAllWishlists(User user) {
         try{
         SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
         preparedStatement = connection.prepareStatement(SQL);
-        preparedStatement.setInt(1, getUserID(email));
+        preparedStatement.setInt(1, user.getUserID());
         resultSet = preparedStatement.executeQuery();
         List<Wishlist> wishlists = new ArrayList<>();
         while (resultSet.next()) {
-            wishlists.add(new Wishlist(resultSet.getString("WishlistName"),email));
+            wishlists.add(new Wishlist(resultSet.getString("WishlistName"), user.getUserID()));
         }
         return wishlists;
 
@@ -82,7 +64,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, wishlist.getWishlistName());
-            preparedStatement.setInt(2, getUserID(wishlist.getEmail()));
+            preparedStatement.setInt(2, wishlist.getUserID());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -90,7 +72,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public void addWish(WishDTO wish) {
+    public void addWish(Wish wish) {
         try {
             SQL = "INSTERT INTO wishlist (wishName, wishLink) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
@@ -117,19 +99,19 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
-
 //-----------------------------------------------------Helper--methods----------------------------------------------\\
-    private int getUserID(EmailDTO email) {
+    private User getUser(String email, String password) {
         try {
-            SQL = "SELECT UserID FROM user WHERE Email = ?";
+            SQL = "SELECT * FROM user WHERE Email = ? AND Password = ?";
             PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
-            preparedStatementUserID.setString(1, email.getEmail());
+            preparedStatementUserID.setString(1, email);
+            preparedStatementUserID.setString(2, password);
             resultSet = preparedStatementUserID.executeQuery();
-            int userID = 0;
+            User user = null;
             if (resultSet.next()) {
-                userID = resultSet.getInt("UserID");
+                user = new User( resultSet.getInt("UserID"), resultSet.getString("UserName"), resultSet.getString("Email"), resultSet.getString("Password"));
             }
-            return userID;
+            return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
