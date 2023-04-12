@@ -1,6 +1,5 @@
 package com.example.miniproject_wishlist.services;
 
-import com.example.miniproject_wishlist.dto.*;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.repositories.IWishlistRepository;
@@ -18,13 +17,12 @@ public class WishlistService {
         repository = (IWishlistRepository) context.getBean(impl);
     }
 
-    public List<Wishlist> getWishlists(EmailDTO email) { return repository.getAllWishlists(email); }
+    public List<Wishlist> getWishlists(User user) { return repository.getAllWishlists(user); }
 
-    public List<Wish> getWishes(EmailDTO email) { return repository.getWishes(email); }
+    public List<Wish> getWishes(User user) { return repository.getWishes(user); }
 
-    public List<String> getEmails() { return repository.getEmails(); }
 
-    public void addWishToWishlist(WishDTO wish) { repository.addWish(wish); }
+    public void addWishToWishlist(Wish wish) { repository.addWish(wish); }
 
     public void addWishlist(Wishlist wishlist) { repository.addWishlist(wishlist); }
 }

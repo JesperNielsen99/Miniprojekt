@@ -1,9 +1,9 @@
 package com.example.miniproject_wishlist.controllers;
 
-import com.example.miniproject_wishlist.dto.*;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.services.WishlistService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,73 +13,78 @@ import java.util.List;
 @Controller
 @RequestMapping(path="/")
 public class WishlistController {
-    private WishlistService wishlistService;
+    private final WishlistService wishlistService;
 
     public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
     }
 
-    @GetMapping(path="wishlists/{email}")
-    public String getWishlists(@PathVariable String email, Model model) {
-        List<Wishlist> wishlists = wishlistService.getWishlists(new EmailDTO(email));
-        model.addAttribute("email", email);
-        model.addAttribute("wishlists", wishlists);
-        return "wishlists";
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("user") != null;
     }
 
-    @GetMapping(path="login")
-    public String logIn(Model model) {
-        List<String> emails = wishlistService.getEmails();
-        EmailDTO emailDTO = new EmailDTO();
-        model.addAttribute("newEmail", emailDTO);
-        model.addAttribute("emails", emails);
+
+    @GetMapping(path="wishlists")
+    public String getWishlists(HttpSession session, Model model) {
+        if (isLoggedIn(session)) {
+            List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
+            model.addAttribute("wishlists", wishlists);
+            return "wishlists";
+        }
         return "login";
     }
 
-    @PostMapping(path="login")
-    public String logInSubmit(EmailDTO emailDTO) {
-        return "redirect:/wishlists/" + emailDTO.getEmail();
+    @GetMapping(path = "addwishlist")
+    public String addWishlistForm(HttpSession session, Model model){
+        if (isLoggedIn(session)) {
+            Wishlist wishlist = new Wishlist();
+            User user = (User) session.getAttribute("user");
+            wishlist.setUserID(user.getUserID());
+            model.addAttribute("newWishlist", wishlist);
+            return "addWishlistForm";
+        }
+        return "login";
     }
 
-    @GetMapping(path = "addwishlist/{email}")
-    public String addWishlistForm(@PathVariable String  email, Model model){
-        Wishlist wishlist = new Wishlist();
-        wishlist.setUserID(new EmailDTO(email));
-        model.addAttribute("newWishlist", wishlist);
-        return "addWishlistForm";
+    @PostMapping(path = "addwishlist")
+    public String addWishlistSubmit(HttpSession session, @ModelAttribute("newWishlist") Wishlist wishlist){
+        if (isLoggedIn(session)) {
+            wishlistService.addWishlist(wishlist);
+            return "redirect:/wishlists/";
+        }
+        return "login";
     }
 
-    @PostMapping(path = "addwishlist/{email}")
-    public String addWishlistSubmit(@PathVariable String  email, @ModelAttribute("newWishlist") Wishlist wishlist){
-        wishlistService.addWishlist(wishlist);
-        return "redirect:/wishlists/" + email;
+    @GetMapping(path = "addwish")
+    public String addWishForm(HttpSession session, Model model) {
+        if (isLoggedIn(session)) {
+            Wish wish = new Wish();
+            List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
+            wish.setWishlists(wishlists);
+            model.addAttribute("newWish", wish);
+            return "addWish";
+        }
+        return "login";
     }
 
-    @GetMapping(path = "addwish/{email}")
-    public String addWishForm(@PathVariable String email, Model model) {
-        WishDTO wish = new WishDTO();
-        List<Wishlist> wishlists = wishlistService.getWishlists(new EmailDTO(email));
-        wish.setWishlists(wishlists);
-        model.addAttribute("newWish", wish);
-        return "addWishForm";
+    @PostMapping(path = "addwish")
+    public String addWishSubmit(HttpSession session, @ModelAttribute("newWish") Wish wish) {
+        if (isLoggedIn(session)) {
+            wishlistService.addWishToWishlist(wish);
+            return "redirect:wishes/";
+        }
+        return "login";
     }
 
-    @PostMapping(path = "addwish/{email}")
-    public String addWishSubmit(@PathVariable String email, @ModelAttribute("newWish") WishDTO wish) {
-        wishlistService.addWishToWishlist(wish);
-        return "redirect:wishes/" + email;
+    @GetMapping(path = "/wishlists/{wishlistName}")
+    public String getWishesFromWishlist(HttpSession session,@PathVariable String wishlistName, Model model) {
+        if (isLoggedIn(session)) {
+            List<Wish> wishes = wishlistService.getWishes((User) session.getAttribute("user"));
+            model.addAttribute("wishes", wishes);
+            model.addAttribute("wishlistName", wishlistName);
+            return "wishes";
+        }
+        return "login";
     }
-
-    @GetMapping(path = "/wishlists/{wishlistName}/{email}")
-    public String getWishesFromWishlist(@PathVariable String wishlistName, @PathVariable String email, Model model) {
-        List<Wish> wishes = wishlistService.getWishes(new EmailDTO(email));
-        model.addAttribute("email", email);
-        model.addAttribute("wishes", wishes);
-        model.addAttribute("wishlistName", wishlistName);
-        return "wishes";
-    }
-
-
-
 
 }

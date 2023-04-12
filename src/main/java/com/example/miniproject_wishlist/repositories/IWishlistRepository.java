@@ -14,6 +14,4 @@ public interface IWishlistRepository {
     List<Wish> getWishes(User user);
 
     void addWish(Wish wish);
-
-
 }
