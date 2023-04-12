@@ -1,6 +1,5 @@
 package com.example.miniproject_wishlist.controllers;
 
-import com.example.miniproject_wishlist.dto.*;
 import com.example.miniproject_wishlist.models.*;
 import com.example.miniproject_wishlist.models.Wishlist;
 import com.example.miniproject_wishlist.services.WishlistService;
@@ -39,7 +38,8 @@ public class WishlistController {
     public String addWishlistForm(HttpSession session, Model model){
         if (isLoggedIn(session)) {
             Wishlist wishlist = new Wishlist();
-            wishlist.setUserID((User) session.getAttribute("user"));
+            User user = (User) session.getAttribute("user");
+            wishlist.setUserID(user.getUserID());
             model.addAttribute("newWishlist", wishlist);
             return "addWishlistForm";
         }
@@ -58,7 +58,7 @@ public class WishlistController {
     @GetMapping(path = "addwish")
     public String addWishForm(HttpSession session, Model model) {
         if (isLoggedIn(session)) {
-            WishDTO wish = new WishDTO();
+            Wish wish = new Wish();
             List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
             wish.setWishlists(wishlists);
             model.addAttribute("newWish", wish);
