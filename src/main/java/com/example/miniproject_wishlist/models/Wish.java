@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Wish {
+    private int wishID;
     private String wishName;
     private String wishLink;
     private List<Wishlist> wishlists = new ArrayList<>();
@@ -18,6 +19,9 @@ public class Wish {
 
     public String getWishName() { return wishName; }
     public String getWishLink() { return wishLink; }
+
+    public int getWishID() { return wishID; }
+
     public List<Wishlist> getWishlists() { return wishlists; }
 
     public void addWishlist(Wishlist wishlist){ wishlists.add(wishlist); }

@@ -42,20 +42,20 @@ public class WishlistRepository_DB implements IWishlistRepository {
 
     @Override
     public List<Wishlist> getAllWishlists(User user) {
-        try{
-        SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
-        preparedStatement = connection.prepareStatement(SQL);
-        preparedStatement.setInt(1, user.getUserID());
-        resultSet = preparedStatement.executeQuery();
-        List<Wishlist> wishlists = new ArrayList<>();
-        while (resultSet.next()) {
-            wishlists.add(new Wishlist(resultSet.getString("WishlistName"), user.getUserID()));
-        }
-        return wishlists;
+        try {
+            SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, user.getUserID());
+            resultSet = preparedStatement.executeQuery();
+            List<Wishlist> wishlists = new ArrayList<>();
+            while (resultSet.next()) {
+                wishlists.add(new Wishlist(resultSet.getString("WishlistName"), user.getUserID()));
+            }
+            return wishlists;
 
-    } catch (SQLException e){
-        throw new RuntimeException(e);
-    }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -81,7 +81,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             int wishID = resultSet.getInt("WishID");
-            for (Wishlist wishlist : wish.getWishlists()){
+            for (Wishlist wishlist : wish.getWishlists()) {
                 SQL = "SELECT WishlistID FROM wishlist WHERE WishlistName = ?";
                 preparedStatement = connection.prepareStatement(SQL);
                 preparedStatement.setString(1, wishlist.getWishlistName());
@@ -90,7 +90,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
                     SQL = "INSERT INTO wishlist_wish (WishID, WishlistID) VALUES (?, ?)";
                     preparedStatement = connection.prepareStatement(SQL);
                     preparedStatement.setInt(1, wishID);
-                    preparedStatement.setInt(2, resultSet.getInt("WishlistID")) ;
+                    preparedStatement.setInt(2, resultSet.getInt("WishlistID"));
                     preparedStatement.executeUpdate();
                 }
             }
@@ -98,4 +98,21 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
+/*
+    @Override
+    public void deleteWish(Wish wish) {
+        try {
+            SQL = "delete from wish where WishID = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, "WishId");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+ */
+
+
 }
