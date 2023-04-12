@@ -12,28 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("Wishlist_DB")
-public class WishlistRepository_DB implements IWishlistRepository, IUserRepository {
+public class WishlistRepository_DB implements IWishlistRepository {
     String SQL = null;
     Connection connection = DB_Connector.getConnection();
-    Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
 
-
-    public List<String> getEmails() {
-        try {
-            SQL = "SELECT Email FROM user";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(SQL);
-            List<String> emails = new ArrayList<>();
-            while (resultSet.next()) {
-                emails.add(resultSet.getString("Email"));
-            }
-            return emails;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public List<Wish> getWishes(User user) {
@@ -41,7 +25,7 @@ public class WishlistRepository_DB implements IWishlistRepository, IUserReposito
             List<Wish> wishlist = new ArrayList<>();
             SQL = "SELECT WishlistID FROM wishlist WHERE UserID = ?";
             preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, getUserID(user.getEmail(), user.getPassword()));
+            preparedStatement.setInt(1, user.getUserID());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
@@ -63,7 +47,7 @@ public class WishlistRepository_DB implements IWishlistRepository, IUserReposito
         try{
         SQL = "SELECT WishlistName FROM wishlist WHERE UserID = ?";
         preparedStatement = connection.prepareStatement(SQL);
-        preparedStatement.setInt(1, getUserID(user.getEmail(), user.getPassword()));
+        preparedStatement.setInt(1, user.getUserID());
         resultSet = preparedStatement.executeQuery();
         List<Wishlist> wishlists = new ArrayList<>();
         while (resultSet.next()) {
@@ -117,71 +101,7 @@ public class WishlistRepository_DB implements IWishlistRepository, IUserReposito
         }
     }
 
-    @Override
-    public User createUser(User user) {
-        try {
-            SQL = "INSTERT INTO user (UserName, Email, Password) VALUES (?, ?, ?)";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.executeUpdate();
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public User updateUser(User user) {
-        try {
-            SQL = "UPDATE user SET UserName = ?, Email = ?, Password = ? WHERE Email = ?";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.setString(4, user.getEmail());
-            preparedStatement.executeUpdate();
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /*@Override
-    public User DeleteUser(User user) {
-        try {
-            SQL = "SELECT "
-            SQL = "DELETE FROM wishlist_wish WHERE wishlistID = "
-            SQL = "DELETE FROM user WHERE Email = ?";
-            preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.executeUpdate();
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-
 //-----------------------------------------------------Helper--methods----------------------------------------------\\
-    private int getUserID(String email, String password) {
-        try {
-            SQL = "SELECT UserID FROM user WHERE Email = ? AND Password = ?";
-            PreparedStatement preparedStatementUserID = connection.prepareStatement(SQL);
-            preparedStatementUserID.setString(1, email);
-            preparedStatementUserID.setString(2, password);
-            resultSet = preparedStatementUserID.executeQuery();
-            int userID = 0;
-            if (resultSet.next()) {
-                userID = resultSet.getInt("UserID");
-            }
-            return userID;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private User getUser(String email, String password) {
         try {
             SQL = "SELECT * FROM user WHERE Email = ? AND Password = ?";
