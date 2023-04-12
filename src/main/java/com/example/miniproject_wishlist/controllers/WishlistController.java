@@ -14,7 +14,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path="/")
 public class WishlistController {
-    private WishlistService wishlistService;
+    private final WishlistService wishlistService;
 
     public WishlistController(WishlistService wishlistService) {
         this.wishlistService = wishlistService;
