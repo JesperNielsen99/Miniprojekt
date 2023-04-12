@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form th:method="post" th:object="${newWishlist}">
+<form th:method="post" th:object="${wishlist}">
     <div>
         <label for="wishlistName">Name of wishlist:</label>
         <input type="text" id="wishlistName" th:field="*{wishlistName}">
