@@ -19,7 +19,7 @@ public class WishlistService {
 
     public List<Wishlist> getWishlists(User user) { return repository.getAllWishlists(user); }
 
-    public Wishlist getWishlist(int wishlistID){ return repository.getWishlist(wishlistID);}
+    public Wishlist getWishlist(int wishlistID, User user){ return repository.getWishlist(wishlistID, user);}
 
     public List<Wish> getWishes(int wishlistID) { return repository.getWishes(wishlistID); }
 

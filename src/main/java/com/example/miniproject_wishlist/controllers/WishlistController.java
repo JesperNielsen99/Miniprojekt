@@ -37,7 +37,10 @@ public class WishlistController {
     @GetMapping(path = "wishes/{wishlistID}")
     public String getWishesFromWishlist(HttpSession session, Model model, @PathVariable int wishlistID ) {
         if (isLoggedIn(session)) {
-            Wishlist wishlist = wishlistService.getWishlist(wishlistID);
+            Wishlist wishlist = wishlistService.getWishlist(wishlistID, (User) session.getAttribute("user"));
+            if(wishlist == null){
+                return "redirect:/wishlists";
+            }
             List<Wish> wishes = wishlistService.getWishes(wishlistID);
             model.addAttribute("wishes", wishes);
             model.addAttribute("wishlistName", wishlist.getWishlistName());

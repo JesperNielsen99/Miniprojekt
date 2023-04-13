@@ -57,20 +57,23 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public Wishlist getWishlist(int wishlistID) {
+    public Wishlist getWishlist(int wishlistID, User user) {
+        Wishlist wishlist = null;
         try {
-            SQL = "SELECT WishlistName, UserID FROM wishlist WHERE WishlistID = ?";
+            SQL = "SELECT WishlistName, UserID FROM wishlist WHERE WishlistID = ? AND UserID";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, wishlistID);
+            preparedStatement.setInt(2, user.getUserID());
             resultSet = preparedStatement.executeQuery();
-            Wishlist wishlist = null;
             if (resultSet.next()) {
                 wishlist = new Wishlist(resultSet.getString("WishlistName"), wishlistID, resultSet.getInt("UserID"));
             }
             return wishlist;
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return wishlist;
+//            throw new RuntimeException(e);
+
         }
     }
 
