@@ -8,6 +8,7 @@ import java.util.List;
 public interface IWishlistRepository {
 
     List<Wishlist> getAllWishlists(User user);
+    Wishlist getWishlist(int wishlistID);
 
     void addWishlist(Wishlist wishlist);
 

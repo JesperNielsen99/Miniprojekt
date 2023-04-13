@@ -57,6 +57,24 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
+    public Wishlist getWishlist(int wishlistID) {
+        try {
+            SQL = "SELECT WishlistName, UserID FROM wishlist WHERE WishlistID = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, wishlistID);
+            resultSet = preparedStatement.executeQuery();
+            Wishlist wishlist = null;
+            if (resultSet.next()) {
+                wishlist = new Wishlist(resultSet.getString("WishlistName"), wishlistID, resultSet.getInt("UserID"));
+            }
+            return wishlist;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void addWishlist(Wishlist wishlist) {
         try {
             SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?)";

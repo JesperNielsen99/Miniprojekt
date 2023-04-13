@@ -19,7 +19,9 @@
     <tr th:each="wishlist: ${wishlists}">
         <td th:text="${wishlist.wishlistName}"/>
         <td>
-            <button type="submit"> Wishes </button>
+            <button type="submit">
+                <a th:href="@{wishes/{wishlistID} (wishlistID=${wishlist.wishlistID}) }">Wishes</a>
+            </button>
         </td>
     </tr>
     </tbody>

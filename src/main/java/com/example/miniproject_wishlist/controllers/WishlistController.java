@@ -34,10 +34,11 @@ public class WishlistController {
         return "redirect:/login";
     }
 
-    @GetMapping(path = "wishes")
-    public String getWishesFromWishlist(HttpSession session, Model model, @ModelAttribute("wishlist") Wishlist wishlist) {
+    @GetMapping(path = "wishes/{wishlistID}")
+    public String getWishesFromWishlist(HttpSession session, Model model, @PathVariable int wishlistID ) {
         if (isLoggedIn(session)) {
-            List<Wish> wishes = wishlistService.getWishes(wishlist.getWishlistID());
+            Wishlist wishlist = wishlistService.getWishlist(wishlistID);
+            List<Wish> wishes = wishlistService.getWishes(wishlistID);
             model.addAttribute("wishes", wishes);
             model.addAttribute("wishlistName", wishlist.getWishlistName());
             return "wishes";
