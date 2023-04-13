@@ -51,5 +51,14 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("/profile")
+    public String profile (Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+
+        model.addAttribute("user",user);
+
+        return "profile";
+    }
+
 
 }

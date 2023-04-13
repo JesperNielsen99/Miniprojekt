@@ -2,27 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link th:href="@{/main.css}" rel="stylesheet">
-  <title>Wishes</title>
+    <meta charset="UTF-8">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <title>Wishes</title>
 </head>
 <body>
-<h1> <span th:text="${wishlistName}"/> wishes </h1>
+<h1><span th:text="${wishlistName}"/> wishes </h1>
 <table>
-  <thead>
-  <tr>
-    <th scope="col">Wish Name</th>
-    <th scope="col">Link</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="wish: ${wishes}">
-    <td th:text="${wish.wishName}"/>
-    <td th:text="${wish.wishLink}"/>
-  </tr>
-  </tbody>
+    <thead>
+    <tr>
+        <th scope="col">Wish Name</th>
+        <th scope="col">Link</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="wish: ${wishes}">
+        <td th:text="${wish.wishName}"/>
+        <td th:text="${wish.wishLink}"/>
+    </tr>
+    </tbody>
 </table>
 <br>
-<a th:href="@{/wishlists/{newEmail} (newEmail=${email})}"><button>Back to your wishlists</button></a>
+<a th:href="@{/wishlists/{newEmail} (newEmail=${email})}">
+    <button>Back to your wishlists</button>
+</a>
+
+
+<button class="profile" th:href="/profile">Add Wish</button>
+
+<a th:href="@{/profile}">
+    <button class="profile">Profile</button>
+</a>
 </body>
 </html>

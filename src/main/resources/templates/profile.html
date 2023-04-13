@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/main.css}" rel="stylesheet">
+    <title>User profile</title>
+</head>
+<body>
+
+<h1>User profile</h1>
+
+<p>Name <span th:text="${user.getUserName()}"></span></p>
+<p>Email <span th:text="${user.getEmail()}"></span></p>
+
+</body>
+</html>
