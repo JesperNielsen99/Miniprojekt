@@ -13,5 +13,12 @@
 <p>Name <span th:text="${user.getUserName()}"></span></p>
 <p>Email <span th:text="${user.getEmail()}"></span></p>
 
+<a th:href="@{/logout}">
+    <button class="logout">Logout</button>
+</a>
+<a th:href="@{wishlists}">
+    <button>Back</button>
+</a>
+
 </body>
 </html>
