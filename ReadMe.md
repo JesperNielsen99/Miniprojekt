@@ -4,9 +4,9 @@ This project is school related and revolves around making a wishlist and adding 
 
 While the application is running the following end-points are valid:
 
-* **example**/login
-* **example**/wishlists
-* **example**/addwishlist
+* **End-point**/login
+* **End-point**/wishlists
+* **End-point**/addwishlist
 
 --- 
 ### Homepage 
