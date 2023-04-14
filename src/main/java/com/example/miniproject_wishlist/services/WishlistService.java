@@ -28,4 +28,6 @@ public class WishlistService {
     public void addWishlist(Wishlist wishlist) { repository.addWishlist(wishlist); }
 
     public void deleteWish(int wishID) { repository.deleteWish(wishID); }
+
+    public void deleteWishlist(int wishlistID) { repository.deleteWishlist(wishlistID); }
 }

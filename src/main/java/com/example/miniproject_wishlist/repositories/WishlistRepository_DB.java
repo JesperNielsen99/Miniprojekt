@@ -114,6 +114,18 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
+    @Override
+    public void deleteWishlist(int wishlistID){
+        try{
+            SQL = "delete from wishlist where WishlistID = (?)";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, wishlistID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 

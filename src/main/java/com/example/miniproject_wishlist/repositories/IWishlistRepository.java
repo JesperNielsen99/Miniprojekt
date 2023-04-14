@@ -17,4 +17,6 @@ public interface IWishlistRepository {
     void addWish(Wish wish, int wishlistID);
 
     void deleteWish(int wishID);
+
+    void deleteWishlist(int wishlistID);
 }

@@ -13,6 +13,7 @@
     <tr>
         <th scope="col">Wishlist Name</th>
         <th scope="col">Link</th>
+        <th scope="col">Delete wishlist</th>
     </tr>
     </thead>
     <tbody>
@@ -22,6 +23,11 @@
             <button type="submit">
                 <a th:href="@{wishes/{wishlistID} (wishlistID=${wishlist.wishlistID}) }">Wishes</a>
             </button>
+        </td>
+        <td>
+            <form th:action="@{/delete/wishlist/{wishlistID} (wishlistID=${wishlist.getWishlistID()})}" method="POST">
+                <button type="submit">Delete</button>
+            </form>
         </td>
     </tr>
     </tbody>

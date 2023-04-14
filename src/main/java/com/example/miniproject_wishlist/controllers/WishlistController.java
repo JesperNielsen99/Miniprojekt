@@ -96,4 +96,14 @@ public class WishlistController {
         }
         return "redirect:/login";
     }
+
+    @PostMapping(path = "/delete/wishlist/{wishlistID}")
+    public String deleteWish(HttpSession session, @PathVariable int wishlistID){
+        if (isLoggedIn(session)){
+            wishlistService.deleteWishlist(wishlistID);
+            return "redirect:/wishlists";
+        }
+        return "redirect:/login";
+    }
+
 }
