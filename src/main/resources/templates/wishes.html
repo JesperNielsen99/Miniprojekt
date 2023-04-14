@@ -19,6 +19,11 @@
     <tr th:each="wish: ${wishes}">
         <td th:text="${wish.wishName}"/>
         <td th:text="${wish.wishLink}"/>
+        <td>
+            <form th:action="@{/delete/wish/{wishID}/{wishlistID} (wishID=${wish.getWishID()}, wishlistID=${wish.getWishlistID()})}" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>

@@ -101,16 +101,21 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
-/*
+
     @Override
     public void deleteWish(int wishID){
         try{
-
+            SQL = "delete from wish where WishID = (?)";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1,wishID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e){
+            throw new RuntimeException(e);
         }
     }
 
 
- */
+
 
 
 }
