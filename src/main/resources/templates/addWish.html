@@ -20,29 +20,18 @@
     </div>
 
     <div>
-        <label for="selectedWishlistId">Select Wishlist:</label>
-        <select id="selectedWishlistId" th:field="*{selectedWishlistId}">
-            <option th:each="wishlist : ${newWish.wishlists}"
-                    th:value="${wishlist.wishlistId}"
-                    th:text="${wishlist.wishlistName}">
-            </option>
-        </select>
-    </div>
-
-    <div>
         <button type="submit">Add Wish</button>
     </div>
 
-
-    <a th:href="@{/profile}">
-        <button class="profile">Profile</button>
-    </a>
-
-    <a th:href="@{/logout}">
-        <button class="logout">Logout</button>
-    </a>
-
 </form>
+
+<a th:href="@{/profile}">
+    <button class="profile">Profile</button>
+</a>
+
+<a th:href="@{/logout}">
+    <button class="logout">Logout</button>
+</a>
 
 </body>
 </html>

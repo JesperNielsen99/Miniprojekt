@@ -11,9 +11,9 @@
     <form action="/login" method="post">
         <p th:if="${wrongCredentials}" class="error">Forkert brugerid eller password</p>
         <p><label>Email:</label>
-            <input name="email" type="text" autofocus></p>
+            <input name="email" type="text" autofocus required></p>
         <p><label>Password:</label>
-            <input name="password" type="password"></p>
+            <input name="password" type="password" required></p>
         <p>
             <button type="submit">Login</button>
             <a th:href="@{'/'}"><button type="button">Fortryd</button></a>

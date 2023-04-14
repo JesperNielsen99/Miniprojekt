@@ -90,13 +90,16 @@ public class WishlistRepository_DB implements IWishlistRepository {
     @Override
     public void addWish(Wish wish, int wishlistID) {
         try {
-            SQL = "INSERT INTO wish (wishName, wishLink) VALUES ?,?";
+            SQL = "INSERT INTO wish (wishName, wishLink) VALUES (?,?)";
             preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, wish.getWishName());
             preparedStatement.setString(2, wish.getWishLink());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
-            int wishID = resultSet.getInt("WishID");
+            int wishID = 0;
+            if (resultSet.next()){
+                wishID = resultSet.getInt(1);
+            }
             SQL = "INSERT INTO wishlist_wish (WishID, WishlistID) VALUES (?, ?)";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, wishID);
@@ -106,21 +109,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
             throw new RuntimeException(e);
         }
     }
-/*
-    @Override
-    public void deleteWish(Wish wish) {
-        try {
-            SQL = "delete from wish where WishID = ?";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, "WishId");
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
-
- */
 
 
 }

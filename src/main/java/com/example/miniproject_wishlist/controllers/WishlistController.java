@@ -41,6 +41,7 @@ public class WishlistController {
             List<Wish> wishes = wishlistService.getWishes(wishlistID);
             model.addAttribute("wishes", wishes);
             model.addAttribute("wishlistName", wishlist.getWishlistName());
+            model.addAttribute("wishlistID", wishlistID);
             return "wishes";
         }
         return "redirect:/login";
@@ -67,7 +68,7 @@ public class WishlistController {
         return "redirect:/login";
     }
 
-    @GetMapping(path = "addwish")
+    @GetMapping(path = "addwish/{wishlistID}")
     public String addWishForm(HttpSession session, Model model) {
         if (isLoggedIn(session)) {
             Wish wish = new Wish();
@@ -79,11 +80,11 @@ public class WishlistController {
         return "redirect:/login";
     }
 
-    @PostMapping(path = "addwish")
-    public String addWishSubmit(HttpSession session, @ModelAttribute("newWish") Wish wish) {
+    @PostMapping(path = "addwish/{wishlistID}")
+    public String addWishSubmit(HttpSession session, @ModelAttribute("newWish") Wish wish, @PathVariable int wishlistID) {
         if (isLoggedIn(session)) {
-            wishlistService.addWishToWishlist(wish);
-            return "redirect:/wishes";
+            wishlistService.addWishToWishlist(wish, wishlistID);
+            return "redirect:/wishes/" + wishlistID;
         }
         return "redirect:/login";
     }

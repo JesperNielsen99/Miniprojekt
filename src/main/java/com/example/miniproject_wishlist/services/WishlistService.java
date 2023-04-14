@@ -23,7 +23,7 @@ public class WishlistService {
 
     public List<Wish> getWishes(int wishlistID) { return repository.getWishes(wishlistID); }
 
-    public void addWishToWishlist(Wish wish) { repository.addWish(wish); }
+    public void addWishToWishlist(Wish wish, int WishlistID) { repository.addWish(wish, WishlistID); }
 
     public void addWishlist(Wishlist wishlist) { repository.addWishlist(wishlist); }
 }
