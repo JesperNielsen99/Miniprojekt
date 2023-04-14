@@ -110,6 +110,13 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
+    @Override
+    public void deleteWish(int wishID){
+        try{
+
+        }
+    }
+
 
 
 }
