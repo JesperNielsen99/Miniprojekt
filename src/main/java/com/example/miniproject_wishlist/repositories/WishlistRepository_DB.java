@@ -21,7 +21,7 @@ public class WishlistRepository_DB implements IWishlistRepository {
     public List<Wish> getWishes(int wishlistID) {
         try {
             List<Wish> wishlist = new ArrayList<>();
-            SQL = "SELECT * FROM wish JOIN wishlist_wish USING (WishID) WHERE WishlistID = ?";
+            SQL = "SELECT * FROM wish WHERE WishlistID = ?";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setInt(1, wishlistID);
             resultSet = preparedStatement.executeQuery();
@@ -30,7 +30,8 @@ public class WishlistRepository_DB implements IWishlistRepository {
                         resultSet.getInt("WishID"),
                         resultSet.getString("WishName"),
                         resultSet.getString("WishLink"),
-                        null));
+                        resultSet.getInt("WishlistID")
+                ));
             }
             return wishlist;
         } catch (SQLException e) {
@@ -90,26 +91,17 @@ public class WishlistRepository_DB implements IWishlistRepository {
     @Override
     public void addWish(Wish wish, int wishlistID) {
         try {
-            SQL = "INSERT INTO wish (wishName, wishLink) VALUES (?,?)";
-            preparedStatement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            SQL = "INSERT INTO wish (wishName, wishLink, wishlistID) VALUES (?,?,?)";
+            preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, wish.getWishName());
             preparedStatement.setString(2, wish.getWishLink());
-            preparedStatement.executeUpdate();
-            resultSet = preparedStatement.getGeneratedKeys();
-            int wishID = 0;
-            if (resultSet.next()){
-                wishID = resultSet.getInt(1);
-            }
-            SQL = "INSERT INTO wishlist_wish (WishID, WishlistID) VALUES (?, ?)";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setInt(1, wishID);
-            preparedStatement.setInt(2, wishlistID);
+            preparedStatement.setInt(3, wishlistID);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
+/*
     @Override
     public void deleteWish(int wishID){
         try{
@@ -117,6 +109,8 @@ public class WishlistRepository_DB implements IWishlistRepository {
         }
     }
 
+
+ */
 
 
 }

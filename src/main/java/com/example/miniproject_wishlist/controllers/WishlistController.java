@@ -69,11 +69,10 @@ public class WishlistController {
     }
 
     @GetMapping(path = "addwish/{wishlistID}")
-    public String addWishForm(HttpSession session, Model model) {
+    public String addWishForm(HttpSession session, Model model, @PathVariable int wishlistID) {
         if (isLoggedIn(session)) {
             Wish wish = new Wish();
-            List<Wishlist> wishlists = wishlistService.getWishlists((User) session.getAttribute("user"));
-            wish.setWishlists(wishlists);
+            wish.setWishlistID(wishlistID);
             model.addAttribute("newWish", wish);
             return "addWish";
         }
