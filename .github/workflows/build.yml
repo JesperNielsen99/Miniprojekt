@@ -1,17 +1,38 @@
-name: Build and test with Maven
+name: Build Workflow
 
-on: [push]
-
-permissions:
-  checks: write
-  actions: read
-  contents: read
+on:
+  push:
+    branches-ignore:
+      - main
 
 jobs:
-  build-and-test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build and Test
-        run: mvn clean verify
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          
+      - name: Attempt rebase and fast-forward merge
+        run: |
+          # Attempt to rebase the current branch onto main
+          git fetch origin main
+          git rebase origin/main
+          
+          # If the rebase is successful, fast-forward merge the current branch into main
+          git checkout main
+          # ${{ github.ref }} means the branch that triggered the workflow
+          git merge --ff-only ${{ github.ref }}
+          
+      - name: Build with Maven
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            mvn clean test
+          
+      - name: Push changes to main
+        if: success()
+        run: |
+          # Push the changes back to GitHub
+          git push origin main
