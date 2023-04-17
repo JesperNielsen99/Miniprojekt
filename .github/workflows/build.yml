@@ -11,15 +11,19 @@ jobs:
     steps:
       - name: Checkout trigger branch
         uses: actions/checkout@v3
+
+      - name: Checkout main branch
+        uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
-          main: main
+          ref: main
 
       - name: Checkout trigger branch
-        run: git checkout ${{ github.ref }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
 
       - name: Attempt rebase
-        run: git rebase ${{ github.main }}
+        run: git rebase main
 
       - name: Checkout main
         run: git checkout main
