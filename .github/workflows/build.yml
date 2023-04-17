@@ -15,7 +15,7 @@ jobs:
       - name: Attempt rebase
         run: |
           # Attempt to rebase the current branch onto main
-          git rebase origin/main
+          git rebase
       - name: Checkout main
         run: |
           # If the rebase is successful, fast-forward merge the current branch into main
