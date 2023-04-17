@@ -76,21 +76,6 @@ public class WishlistRepository_DB implements IWishlistRepository {
     }
 
     @Override
-    public void addUser(User user){
-        try{
-            SQL = "INSERT INTO user (UserName, Email, Password)\n" +
-                    "VALUES (?, ?, ?)";
-            preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, user.getUserName());
-            preparedStatement.setString(2, user.getEmail());
-            preparedStatement.setString(3, user.getPassword());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
     public void addWishlist(Wishlist wishlist) {
         try {
             SQL = "INSERT INTO wishlist (WishlistName, UserID) VALUES (?, ?)";

@@ -10,8 +10,6 @@ public interface IWishlistRepository {
     List<Wishlist> getAllWishlists(User user);
     Wishlist getWishlist(int wishlistID);
 
-    void addUser(User user);
-
     void addWishlist(Wishlist wishlist);
 
     List<Wish> getWishes(int wishlistID);
