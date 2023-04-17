@@ -33,9 +33,7 @@ jobs:
           java-version: 17
 
       - name: Build with Maven
-        uses: maven/execute@v2
-        with:
-          goals: 'clean package'
+        run: mvn clean package
 
       - name: Push changes to main
         if: success()
