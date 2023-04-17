@@ -15,6 +15,7 @@ jobs:
       - name: Attempt rebase
         run: |
           git branch
+          git fetch 
           git rebase
 
       - name: Setup-java
