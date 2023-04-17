@@ -22,7 +22,11 @@ jobs:
 
       - name: Merge into main
         run: git merge --ff-only HEAD
-          
+
+      - name: Push changes to main
+        run: git push origin main
+
+
       - name: Build with Maven
         uses: dorny/paths-filter@v2
         with:
