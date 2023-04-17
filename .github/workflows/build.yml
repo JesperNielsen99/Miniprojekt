@@ -12,21 +12,13 @@ jobs:
       - name: Checkout trigger branch
         uses: actions/checkout@v3
 
+      - name: Attempt rebase
+        run: git rebase
+
       - name: Checkout main branch
         uses: actions/checkout@v3
         with:
           ref: main
-
-      - name: Checkout trigger branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
-
-      - name: Attempt rebase
-        run: git rebase
-
-      - name: Checkout main
-        run: git checkout main
 
       - name: Merge into main
         run: git merge --ff-only ${{ github.ref }}
