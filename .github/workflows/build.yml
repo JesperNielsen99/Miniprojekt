@@ -15,11 +15,11 @@ jobs:
       - name: Attempt rebase
         run: |
           # Attempt to rebase the current branch onto main
-          git rebase main
+          git rebase origin/main
       - name: Checkout main
         run: |
           # If the rebase is successful, fast-forward merge the current branch into main
-          git checkout main
+          git checkout origin/main
       - name: Merge into Main
         run: |  
           # ${{ github.ref }} means the branch that triggered the workflow
