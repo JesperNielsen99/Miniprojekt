@@ -12,13 +12,16 @@ jobs:
       - name: Checkout main branch
         uses: actions/checkout@v3
           
-      - name: Attempt rebase and fast-forward merge
+      - name: Attempt rebase
         run: |
           # Attempt to rebase the current branch onto main
           git rebase main
-          
+      - name: Checkout main
+        run: |
           # If the rebase is successful, fast-forward merge the current branch into main
           git checkout main
+      - name: Merge into Main
+        run: |  
           # ${{ github.ref }} means the branch that triggered the workflow
           git merge --ff-only ${{ github.ref }}
           
