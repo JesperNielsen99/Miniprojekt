@@ -11,14 +11,11 @@ jobs:
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v3
-        with:
-          ref: main
           
       - name: Attempt rebase and fast-forward merge
         run: |
           # Attempt to rebase the current branch onto main
-          git fetch origin main
-          git rebase origin/main
+          git rebase main
           
           # If the rebase is successful, fast-forward merge the current branch into main
           git checkout main
