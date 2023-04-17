@@ -21,7 +21,7 @@ jobs:
           ref: main
 
       - name: Merge into main
-        run: git merge --ff-only HEAD
+        run: git merge --ff-only ${{ github.ref }}
 
       - name: Push changes to main
         run: git push
