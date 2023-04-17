@@ -19,7 +19,7 @@ jobs:
       - name: Checkout main
         run: |
           # If the rebase is successful, fast-forward merge the current branch into main
-          git checkout origin/main
+          git checkout main
       - name: Merge into Main
         run: |  
           # ${{ github.ref }} means the branch that triggered the workflow
