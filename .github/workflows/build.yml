@@ -16,8 +16,7 @@ jobs:
         run: git rebase
 
       - name: Checkout main
-        run: git checkout newTestBranch
-
+        run: git checkout origin main
 
       - name: Merge into main
         run: git merge --ff-only ${{ github.ref }}
