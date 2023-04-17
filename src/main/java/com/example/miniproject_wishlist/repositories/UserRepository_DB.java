@@ -17,7 +17,7 @@ public class UserRepository_DB implements IUserRepository {
     @Override
     public User createUser(User user) {
         try {
-            SQL = "INSTERT INTO user (UserName, Email, Password) VALUES (?, ?, ?)";
+            SQL = "INSERT INTO user (UserName, Email, Password) VALUES (?, ?, ?)";
             preparedStatement = connection.prepareStatement(SQL);
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getEmail());
