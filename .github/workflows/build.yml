@@ -19,7 +19,7 @@ jobs:
         run: git checkout ${{ github.ref }}
 
       - name: Attempt rebase
-        run: git rebase main
+        run: git rebase ${{ github.main }}
 
       - name: Checkout main
         run: git checkout main
