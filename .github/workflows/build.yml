@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch
+      - name: Checkout trigger branch
         uses: actions/checkout@v3
           
       - name: Attempt rebase
@@ -17,10 +17,13 @@ jobs:
           # Attempt to rebase the current branch onto main
           git rebase
       - name: Checkout main
+        uses: actions/checkout@v3
+        with:
+          ref: main
         run: |
           # If the rebase is successful, fast-forward merge the current branch into main
           git checkout main
-      - name: Merge into Main
+      - name: Merge into main
         run: |  
           # ${{ github.ref }} means the branch that triggered the workflow
           git merge --ff-only ${{ github.ref }}
