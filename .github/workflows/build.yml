@@ -24,7 +24,7 @@ jobs:
         run: git merge --ff-only HEAD
 
       - name: Push changes to main
-        run: git push origin main
+        run: git push
 
 
       - name: Build with Maven
