@@ -18,9 +18,6 @@ jobs:
           git rebase
 
       - name: Checkout main
-        uses: actions/checkout@v3
-        with:
-          ref: main
         run: |
           # If the rebase is successful, fast-forward merge the current branch into main
           git checkout main
