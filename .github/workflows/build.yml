@@ -16,6 +16,7 @@ jobs:
         run: |
           # Attempt to rebase the current branch onto main
           git rebase
+
       - name: Checkout main
         uses: actions/checkout@v3
         with:
